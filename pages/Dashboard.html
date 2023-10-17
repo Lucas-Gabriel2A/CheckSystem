@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Inclua o script do Chart.js -->
+    <!-- Inclua o script do Chart.js -->
+    <!-- Inclua o script do Chart.js -->
+    <!-- Inclua o script do Chart.js --> <!-- Inclua o script do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Inclua o script do Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Conteúdo do Dashboard (gráficos) -->
+    <div>
+        <h1>Dashboard</h1>
+        <canvas id="lineChart"></canvas>
+        <canvas id="barChart"></canvas>
+        <button onclick="printDashboard()">Imprimir Dashboard</button>
+    </div>
+
+    <script>
+        // Lógica para atualizar os gráficos do Dashboard
+        function updateDashboardCharts() {
+            // Chama a API para obter os dados mais recentes
+            axios.get('http://localhost:3000/items/all')
+                .then(response => {
+                    // Dados recebidos da API
+                    var tableData = response.data;
+
+                    // Filtra os dados para cada linha
+                    var lines = Array.from(new Set(tableData.map(item => item.line)));
+
+                    // Dados para os gráficos
+                    var defectiveData = lines.map(line => tableData.filter(item => item.line === line && item.check === false).length);
+                    var goodData = lines.map(line => tableData.filter(item => item.line === line && item.check === true).length);
+                    var totalData = lines.map(line => tableData.filter(item => item.line === line).length);
+
+                    // Configuração do gráfico de linhas
+                    var lineChart = new Chart(document.getElementById('lineChart').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: lines,
+                            datasets: [
+                                {
+                                    label: 'Peças Defeituosas',
+                                    borderColor: 'red',
+                                    data: defectiveData,
+                                },
+                                {
+                                    label: 'Peças Boas',
+                                    borderColor: 'green',
+                                    data: goodData,
+                                },
+                            ],
+                        },
+                    });
+
+                    // Configuração do gráfico de barras
+                    var barChart = new Chart(document.getElementById('barChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: lines,
+                            datasets: [
+                                {
+                                    label: 'Total de Peças',
+                                    backgroundColor: 'blue',
+                                    data: totalData,
+                                },
+                            ],
+                        },
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar dados para o Dashboard:', error);
+                });
+        }
+
+        // Chama a função para atualizar os gráficos do Dashboard
+        updateDashboardCharts();
+
+        // Função para imprimir o Dashboard
+        function printDashboard() {
+            window.print();
+        }
+    </script>
+
+</body>
+
+</html>

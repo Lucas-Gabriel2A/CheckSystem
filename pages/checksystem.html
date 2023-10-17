@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <title>CheckSystem</title>
+    <link rel="icon" style="width: 30px; height: 500px;" href="/images/check-mark.png " />
+
+    <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
+    <!-- Inclua o estilo do Font Awesome (para ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+
+</head>
+</head>
+
+
+</head>
+<style>
+    body {
+        font-family: "inter", sans-serif;
+        background:
+            #001B09;
+        height: 640px;
+        scroll-behavior: smooth;
+        overflow-y: hidden;
+    }
+
+    .container::before {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"] {
+        width: 70%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: 0;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #000000;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 15px;
+        color: black;
+    }
+
+    th {
+        background: rgba(0, 138, 55, 0.1);
+
+        ;
+        font-weight: bold;
+    }
+
+    tr {
+        color: rgb(0, 0, 0);
+        font-weight: 400;
+        font-family: inter;
+    }
+
+    thead {}
+
+    th {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #003a8a;
+        color: #000000;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600
+    }
+
+    .button-container {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    @font-face {
+        font-family: inter;
+        src: url(/pages/fonts/inter.ttf);
+    }
+
+    .button-container button {
+        padding: 10px 20px;
+        background-color: #0B4D00;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 4px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .meubutton {
+        color: #ffffff;
+        background-color: #007a08;
+        font-size: 15px;
+        border: 1px solid #328f00;
+        border-radius: 10px;
+        padding: 10px 25px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .meubutton a {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .edit-button {
+        padding: 6px 12px;
+        background-color: #006d0d;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 15px
+    }
+
+    .edit-button:hover {
+        background-color: #006d0d;
+    }
+
+    .delete-button {
+        padding: 6px 12px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 15px
+    }
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+
+    .userInfoForm {
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-container {
+
+
+        padding: 20px;
+        border-radius: 8px;
+
+    }
+
+    .form-container h2 {
+        margin-bottom: 10px;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .form-container input {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .form-content {
+        display: flex;
+        width: 100%;
+    }
+
+    .form-instructions {
+        flex: 1;
+        padding: 20px;
+        border-right: 2px solid #000;
+        /* line preta à direita */
+    }
+
+    .form-instructions h2 {
+        margin-bottom: 10px;
+    }
+
+    .form-inputs {
+        flex: 1;
+        padding: 20px;
+    }
+
+
+    .button-container {
+        text-align: center;
+    }
+
+    .button-container button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+
+
+    .nolocated {
+        position: relative;
+        top: 18vh;
+        right: 14vh;
+        width: 200px;
+        height: 40px;
+        background-color: white;
+
+
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .modal {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        /* Ajuste a largura conforme necessário */
+        text-align: center;
+        /* centralizar o conteúdo */
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        /* Os itens são dispostos em coluna */
+        margin-bottom: 10px;
+    }
+
+    label {
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    input {
+        padding: 5px;
+
+        width: 100%;
+        /* Preenche a largura do contêiner */
+        box-sizing: border-box;
+        /* Inclui o padding na largura total */
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    label {
+        margin-right: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 5px;
+        transform: scale(1.5);
+        /* Ajusta o tamanho dos checkboxes */
+    }
+
+    input[type="checkbox"]:disabled+label {
+        color: #aaa;
+        /* Altera a cor do rótulo quando o checkbox está desabilitado */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        /* Adicionado espaço entre os campos de entrada e os botões */
+    }
+
+    button {
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        background-color: #3498db;
+        /* Cor de fundo azul */
+        color: #fff;
+        /* Cor do texto branco */
+        border: none;
+        border-radius: 4px;
+        /* Bordas arredondadas */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Sombra leve */
+        transition: background-color 0.3s ease;
+        /* Transição suave da cor de fundo */
+
+        /* Adicionando hover para mudar a cor de fundo ao passar o mouse */
+    }
+
+    button:hover {
+        background-color: #2980b9;
+        /* Cor de fundo azul mais escura ao passar o mouse */
+    }
+
+    #cadastrarBtn {
+        flex: 1;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+    }
+
+    #cadastrarBtn:hover {
+        background-color: #45a049;
+    }
+
+    #cancelarBtn {
+        flex: 1;
+        background-color: #f44336;
+        color: white;
+        border: none;
+    }
+
+    #cancelarBtn:hover {
+        background-color: #d32f2f;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+    .modal-menu {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        z-index: 999;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-menu button {
+        margin-right: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+
+    <body>
+        <img src="/images/ISYSTEM__1_-removebg-preview.png" alt="" width="7%">
+        <div class="container">
+
+            <h1 style="font-family: inter;font-weight: 600;">CHECK SYSTEM</h1>
+            <button id="openModalBtn">Cadastrar Manualmente</button>
+           
+
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeModalBtn">&times;</span>
+
+                    <div class="input-container">
+                        <label for="line">Linha:</label>
+                        <input type="text" id="line">
+                    </div>
+
+                    <div class="input-container">
+                        <label for="item">Item:</label>
+                        <input type="text" id="item">
+                    </div>
+
+                    <div class="input-container">
+                        <label for="conformeCheckbox">Conforme:</label>
+                        <input type="checkbox" id="conformeCheckbox" onchange="handleCheckboxChange('conformeCheckbox')">
+                    </div>
+                
+                    <div class="input-container">
+                        <label for="naoConformeCheckbox">Não Conforme:</label>
+                        <input type="checkbox" id="naoConformeCheckbox" onchange="handleCheckboxChange('naoConformeCheckbox')">
+                    </div>
+
+
+
+                    <div class="input-container">
+                        <label for="description">Descrição:</label>
+                        <input type="text" id="description">
+                    </div>
+
+                    <div class="button-container">
+                        <button id="cadastrarBtn">Cadastrar</button>
+                        <button id="cancelarBtn">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+           
+            
+            <!-- Tabela Tabulator -->
+            <div id="example-table"></div>
+            
+            <button onclick="exportToPDF()">Exportar para PDF</button>
+            <button onclick="exportToExcel()">Exportar para Excel</button>
+            <button type="button" class="btn btn-primary" ><a href="Dashboard.html" class="btn btn-primary">Ver Dashboard</a></button>
+
+
+        </div>
+
+        <script src="https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js"></script>
+        <!-- Inclua o script do Axios -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- Inclua o script do html2pdf -->
+         <script src="https://unpkg.com/html2pdf.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <!-- Inclua o script do Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+
+        <script>
+            function exportToPDF() {
+        var table = document.getElementById("example-table");
+
+        // Verificar se html2pdf está definido antes de usá-lo
+        if (typeof html2pdf !== 'undefined') {
+            // Configuração para o html2pdf
+            var opt = {
+                margin: 10,
+                filename: 'tabela_exportada.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Adicionando a data e hora no conteúdo do PDF
+            var today = new Date();
+            var dateTimeString = 'Impresso em: ' + today.toLocaleString();
+            var storedUser = localStorage.getItem('currentUser');
+                var currentUser = storedUser ? JSON.parse(storedUser) : { username: 'Usuário Desconhecido' };
+                var userInfo = 'Usuário: ' + currentUser.username;
+
+            var content = table.outerHTML + '<div style="position: `relative; bottom: 46vh; right: 10px;">' + dateTimeString + '<br>' + userInfo +  '</div>';
+
+            html2pdf().from(content).set(opt).outputPdf('dataurlnewwindow');
+        } else {
+            console.error('html2pdf não está definido. Certifique-se de que a biblioteca está carregada corretamente.');
+        }
+    }
+
+    function exportToExcel() {
+        // Obter dados da tabela
+        var tableData = table.getData();
+        
+        // Criar uma planilha Excel
+        var ws = XLSX.utils.json_to_sheet(tableData);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tabela");
+
+        // Salvar o arquivo Excel
+        XLSX.writeFile(wb, 'tabela_exportada.xlsx');
+    }
+
+    // Chamar a API para obter os dados da lista geral
+    axios.get('http://localhost:3000/items/all')
+        .then(response => {
+            // Dados recebidos da API
+            var tableData = response.data;
+
+            // Configuração da tabela
+            var table = new Tabulator("#example-table", {
+                height: "311px",
+                layout: "fitColumns",
+                columns: [
+                    { title: "ID", field: "id", width: 50, headerFilter: "input" },
+                    { title: "Linha", field: "line", headerFilter: "input" },
+                    { title: "Item", field: "item", headerFilter: "input" },
+                    { title: "Check", field: "check", formatter: "tickCross", hozAlign: "center", headerFilter: "tickCross", headerFilterParams: { tristate: true }, headerFilterEmptyCheck: function (value) { return value === null } },
+                    { title: "Descrição", field: "description", headerFilter: "input" },
+                    {
+        title: "Ações",
+        field: "Actions",
+        headerSort: false,
+        formatter: function (cell, formatterParams, onRendered) {
+            // Botão de ações para abrir o modal de ações
+            return '<button class="btn btn-primary" onclick="openActionsModal(' + cell.getRow().getData().id + ')">Ações</button>';
+        }
+    },
+                ],
+                data: tableData,
+            });
+
+            // Atualizar a referência à tabela
+            updateTableReference(table);
+        })
+        .catch(error => {
+            console.error('Erro ao carregar dados:', error);
+        });
+        function editItem(itemId) {
+    // Obtém o item com base no ID
+    var item = table.getRow(itemId).getData();
+
+    // Preenche os campos do modal de edição
+    document.getElementById('editLine').value = item.line;
+    document.getElementById('editItem').value = item.item;
+    document.getElementById('editDescription').value = item.description;
+
+    // Adiciona um evento de clique no botão de atualização no modal
+    document.getElementById('editUpdateButton').onclick = function() {
+        updateItem(itemId);
+    };
+
+    // Obtém o modal de edição
+    var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+
+    // Verifica se o modal não está atualmente visível antes de mostrá-lo
+    if (!editModal._isShown) {
+        // Exibe o modal de edição
+        editModal.show();
+    }
+}
+
+function openActionsModal(itemId) {
+    // Obtém o item com base no ID
+    var item = table.getRow(itemId).getData();
+
+    // Configuração do conteúdo do modal
+    var modalContent = '<div class="modal fade" id="actionsModal" tabindex="-1" aria-labelledby="actionsModalLabel" aria-hidden="true" data-bs-backdrop="false">' +
+        '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+        '<div class="modal-header">' +
+        '<h5 class="modal-title" id="actionsModalLabel">Ações</h5>' +
+        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+        '</div>' +
+        '<div class="modal-body">' +
+        '<button class="btn btn-success" onclick="editItem(' + item.id + ')">Editar</button>' +
+        '<button class="btn btn-danger" onclick="confirmDeleteItem(' + item.id + ')">Excluir</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    // Adiciona o conteúdo do modal ao corpo da página
+    document.body.insertAdjacentHTML('beforeend', modalContent);
+
+    // Atualiza o modal
+    var modal = new bootstrap.Modal(document.getElementById('actionsModal'));
+    modal.show();
+}
+
+// Função para realizar a atualização via API
+function updateItem(itemId) {
+    var editForm = document.getElementById('editForm');
+    var formData = new FormData(editForm);
+
+    // Realize a chamada de API para atualização
+    axios.put('http://localhost:3000/items/' + itemId, formData)
+        .then(response => {
+            // Atualização bem-sucedida, se necessário, você pode realizar alguma ação aqui
+            console.log('Item atualizado com sucesso:', response.data);
+
+            // Feche o modal de edição
+            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.hide();
+
+            // Recarregue os dados da tabela
+            reloadTableData();
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar item:', error);
+            // Trate os erros conforme necessário
+        });
+}
+function confirmDeleteItem(itemId) {
+    // Exibe um alerta de confirmação
+    var confirmDelete = window.confirm("Tem certeza de que deseja excluir este item?");
+
+    // Se o usuário confirmar, chama a função deleteItem
+    if (confirmDelete) {
+        deleteItem(itemId);
+    }
+}
+
+// Função para excluir o item (chamada pela API)
+function deleteItem(itemId) {
+    // Faz a chamada da API para excluir o item
+    axios.delete('http://localhost:3000/items/delete/' + itemId)
+        .then(response => {
+            // Lógica para lidar com a exclusão bem-sucedida
+            alert('Item excluído com sucesso:', itemId);
+            refreshTable()
+            // Adicione aqui qualquer outra ação que você deseja realizar após a exclusão
+        })
+        .catch(error => {
+            // Lógica para lidar com erros na exclusão
+            alert('Erro ao excluir o item:', error);
+            // Adicione aqui qualquer outra ação que você deseja realizar em caso de erro
+        });
+}
+// Função para excluir um item
+
+    // Função para atualizar a referência à tabela
+    function updateTableReference(newTable) {
+        table = newTable;
+    }
+
+    function refreshTable() {
+    // Chama a API para obter os dados mais recentes
+    axios.get('http://localhost:3000/items/all')
+        .then(response => {
+            // Dados recebidos da API
+            var tableData = response.data;
+
+            // Atualiza os dados da tabela
+            table.setData(tableData);
+        })
+        .catch(error => {
+            console.error('Erro ao carregar dados:', error);
+        });
+}
+                function exportToExcel() {
+            // Obter dados da tabela
+            var tableData = table.getData();
+            
+            // Criar uma planilha Excel 
+            var ws = XLSX.utils.json_to_sheet(tableData);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Tabela");
+
+            // Salvar o arquivo Excel
+            XLSX.writeFile(wb, 'tabela_exportada.xlsx');
+        }
+            document.addEventListener("DOMContentLoaded", function () {
+                var openModalBtn = document.getElementById("openModalBtn");
+                var closeModalBtn = document.getElementById("closeModalBtn");
+                var modal = document.getElementById("myModal");
+                modal.style.display = "none";
+                openModalBtn.addEventListener("click", function () {
+                    modal.style.display = "block";
+                });
+
+                closeModalBtn.addEventListener("click", function () {
+                    modal.style.display = "none";
+                });
+
+                window.addEventListener("click", function (event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                });
+
+                var cadastrarBtn = document.getElementById("cadastrarBtn");
+                var cancelarBtn = document.getElementById("cancelarBtn");
+
+                cadastrarBtn.addEventListener("click", function () {
+                    // Coleta dos valores dos campos
+                    var line = document.getElementById("line").value;
+                    var item = document.getElementById("item").value;
+
+                    // Verifica qual checkbox está selecionado
+                    var conformeCheckbox = document.getElementById("conformeCheckbox");
+                    var naoConformeCheckbox = document.getElementById("naoConformeCheckbox");
+                    var check = conformeCheckbox.checked ? true : (naoConformeCheckbox.checked ? false : null);
+
+                    // Se nenhum checkbox estiver selecionado, exiba uma mensagem e não envie nada
+                    if (check === null) {
+                        console.error("Selecione 'Conforme' ou 'Não Conforme'.");
+                        return;
+                    }
+
+                    var description = document.getElementById("description").value;
+
+                    // Criação do objeto JSON
+                    var data = {
+                        line: line,
+                        item: item,
+                        check: check,
+                        description: description
+                    };
+
+                    // Envio dos dados via Axios
+                    axios.post('http://localhost:3000/items/create', data)
+                        .then(function (response) {
+                            console.log("Dados cadastrados com sucesso!");
+                            modal.style.display = "none";
+                        })
+                        .catch(function (error) {
+                            console.error("Erro ao cadastrar dados:", error);
+                        });
+                });
+
+                cancelarBtn.addEventListener("click", function () {
+                    modal.style.display = "none";
+                });
+            });
+
+          
+                
+                // ... código posterior ...
+            
+
+
+            // ... código posterior ...
+
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        
+    </body>
+
+</html> 
